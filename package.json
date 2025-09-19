@@ -4,12 +4,11 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "typescript": "^5"
   },
   "workspaces": [
     "packages/*"
-  ],
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+  ]
+
 }
