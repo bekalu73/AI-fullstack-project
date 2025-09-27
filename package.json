@@ -1,13 +1,6 @@
 {
    "name": "full-stack-project",
    "module": "index.ts",
-   "type": "module",
-   "private": true,
-   "scripts": {
-      "dev": "bun index.ts",
-      "prepare": "husky",
-      "format": "prettier --write ."
-   },
    "devDependencies": {
       "@types/bun": "latest",
       "concurrently": "^9.2.1",
@@ -16,7 +9,18 @@
       "prettier": "latest",
       "typescript": "^5"
    },
+   "private": true,
+   "scripts": {
+      "dev": "bun index.ts",
+      "prepare": "husky",
+      "format": "prettier --write ."
+   },
+   "type": "module",
    "workspaces": [
       "packages/*"
-   ]
+   ],
+   "dependencies": {
+      "axios": "^1.12.2",
+      "react-hook-form": "^7.63.0"
+   }
 }
