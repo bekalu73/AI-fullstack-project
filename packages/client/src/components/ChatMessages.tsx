@@ -22,24 +22,31 @@ const ChatMessages = ({
    onCopy,
 }: ChatMessagesProps) => {
    const messagesEndRef = useRef<HTMLDivElement>(null);
+   const containerRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      // Smooth scroll to bottom when new messages arrive or typing starts/stops
+      messagesEndRef.current?.scrollIntoView({
+         behavior: 'smooth',
+         block: 'end',
+      });
    }, [messages, isTyping]);
 
    return (
-      <div className="flex-1 p-6 pb-32 overflow-y-auto space-y-6">
-         {messages.map((message, index) => (
-            <ChatMessage
-               key={index}
-               message={message}
-               index={index}
-               copiedIndex={copiedIndex}
-               onCopy={onCopy}
-            />
-         ))}
-         {isTyping && <TypingIndicator />}
-         <div ref={messagesEndRef} />
+      <div ref={containerRef} className="flex-1 overflow-y-auto scroll-smooth">
+         <div className="max-w-4xl mx-auto px-4 py-6 space-y-1">
+            {messages.map((message, index) => (
+               <ChatMessage
+                  key={index}
+                  message={message}
+                  index={index}
+                  copiedIndex={copiedIndex}
+                  onCopy={onCopy}
+               />
+            ))}
+            {isTyping && <TypingIndicator />}
+            <div ref={messagesEndRef} className="h-4" />
+         </div>
       </div>
    );
 };

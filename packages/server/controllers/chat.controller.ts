@@ -8,7 +8,7 @@ const chatSchema = z.object({
       .trim()
       .min(1, 'Prompt is Required')
       .max(100, 'Prompt is too long(max 100 characters)'),
-   conversationId: z.string(),
+   conversationId: z.string().optional(),
 });
 
 export const ChatController = {
@@ -16,16 +16,23 @@ export const ChatController = {
       const parseResult = chatSchema.safeParse(req.body);
 
       if (!parseResult.success) {
-         res.status(400).json(parseResult.error.format());
+         return res.status(400).json(parseResult.error.format());
       }
+
       try {
-         const { prompt, conversationId } = req.body;
+         const { prompt, conversationId = 'default' } = parseResult.data;
 
          const response = await chatService.sendMessage(prompt, conversationId);
 
          return res.status(200).json({ message: response.message });
-      } catch (error) {
-         return res.status(500).json('Failed to generate response');
+      } catch (error: any) {
+         console.error('Controller error:', error);
+         return res
+            .status(500)
+            .json({
+               error: 'Failed to generate response',
+               details: error.message,
+            });
       }
    },
 };
